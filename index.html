@@ -64,13 +64,13 @@
         const textureLoader = new THREE.TextureLoader();
         
         // FLOOR TEXTURE
-        const floorTexture = textureLoader.load('texture/brown-wood-textured-background-with-design-space.jpg');
+        const floorTexture = textureLoader.load('https://raw.githubusercontent.com/Essabki/3D_room/main/texture/brown-wood-textured-background-with-design-space.jpg');
         floorTexture.wrapS = THREE.RepeatWrapping;
         floorTexture.wrapT = THREE.RepeatWrapping;
         floorTexture.repeat.set(1,2);
 
         // WALL TEXTURE
-        const wallTexture = textureLoader.load('texture/wall.jpg');
+        const wallTexture = textureLoader.load('https://raw.githubusercontent.com/Essabki/3D_room/refs/heads/main/texture/wall.jpg');
         wallTexture.wrapS = THREE.RepeatWrapping;
         wallTexture.wrapT = THREE.RepeatWrapping;
         wallTexture.repeat.set(2, 1);
@@ -121,19 +121,19 @@
         scene.add(left_Wall_top);
 
         // LEFT WALL RIGHT
-        const left_Wall_rightGeometry = new THREE.PlaneGeometry(5, 4);
+        const left_Wall_rightGeometry = new THREE.PlaneGeometry(7, 4);
         const left_Wall_right = new THREE.Mesh(left_Wall_rightGeometry, wallMaterial);
         left_Wall_right.rotation.y = Math.PI / 2;
-        left_Wall_right.position.set(-10, 5, -7.5);
+        left_Wall_right.position.set(-10, 5, -6.5);
         left_Wall_right.castShadow = true;
         left_Wall_right.receiveShadow = true;
         scene.add(left_Wall_right);
 
         // LEFT WALL LEFT
-        const left_Wall_leftGeometry = new THREE.PlaneGeometry(5, 4);
-        const left_Wall_left = new THREE.Mesh(left_Wall_rightGeometry, wallMaterial);
+        const left_Wall_leftGeometry = new THREE.PlaneGeometry(7, 4);
+        const left_Wall_left = new THREE.Mesh(left_Wall_leftGeometry, wallMaterial);
         left_Wall_left.rotation.y = Math.PI / 2;
-        left_Wall_left.position.set(-10, 5, 7.5);
+        left_Wall_left.position.set(-10, 5, 6.5);
         left_Wall_left.castShadow = true;
         left_Wall_left.receiveShadow = true;
         scene.add(left_Wall_left);
@@ -149,7 +149,7 @@
 
         //=============================== WINDOWS
         
-        const windows_Geometry = new THREE.BoxGeometry(10, 4, 0.1);
+        const windows_Geometry = new THREE.BoxGeometry(6, 4, 0.1);
         const windows_Material = new THREE.MeshStandardMaterial({
         color: 0xffffff,
         transparent: true,
