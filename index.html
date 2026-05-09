@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Room</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-family: Arial;
+            font-size: 14px;
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="info">
+        Mouse: Orbit | Scroll: Zoom to Cursor | Right-click drag: Pan
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+        // Scene setup
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x87CEEB);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        document.body.appendChild(renderer.domElement);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(10, 20, 10);
+        directionalLight.castShadow = true;
+        directionalLight.shadow.mapSize.width = 2048;
+        directionalLight.shadow.mapSize.height = 2048;
+        scene.add(directionalLight);
+
+        // ================================= TEXTURE LOADER
+              
+        const textureLoader = new THREE.TextureLoader();
+        
+        // FLOOR TEXTURE
+        const floorTexture = textureLoader.load('texture/brown-wood-textured-background-with-design-space.jpg');
+        floorTexture.wrapS = THREE.RepeatWrapping;
+        floorTexture.wrapT = THREE.RepeatWrapping;
+        floorTexture.repeat.set(1,2);
+
+        // WALL TEXTURE
+        const wallTexture = textureLoader.load('texture/wall.jpg');
+        wallTexture.wrapS = THREE.RepeatWrapping;
+        wallTexture.wrapT = THREE.RepeatWrapping;
+        wallTexture.repeat.set(2, 1);
+
+        // Materials
+        const floorMaterial = new THREE.MeshLambertMaterial({
+        map: floorTexture
+        });
+
+        const wallMaterial = new THREE.MeshLambertMaterial({
+        map: wallTexture
+        });
+
+        //=============================== FLOOR
+        const floorGeometry = new THREE.PlaneGeometry(20, 20);
+        const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+        floor.rotation.x = -Math.PI / 2;
+        floor.receiveShadow = true;
+        scene.add(floor);
+        
+        //=============================== WALLS
+
+        // RIGHT WALL
+        const rightWallGeometry = new THREE.PlaneGeometry(20, 10);
+        const rightWall = new THREE.Mesh(rightWallGeometry, wallMaterial);
+        rightWall.rotation.y = Math.PI / 2;
+        rightWall.position.set(10, 5, 0);
+        rightWall.castShadow = true;
+        rightWall.receiveShadow = true;
+        scene.add(rightWall);
+
+        // LEFT WALL DAWN 
+        const left_Wall_dawnGeometry = new THREE.PlaneGeometry(20, 3);
+        const left_Wall_dawn = new THREE.Mesh(left_Wall_dawnGeometry, wallMaterial);
+        left_Wall_dawn.rotation.y = Math.PI / 2;
+        left_Wall_dawn.position.set(-10, 1.5, 0);
+        left_Wall_dawn.castShadow = true;
+        left_Wall_dawn.receiveShadow = true;
+        scene.add(left_Wall_dawn);
+
+        // LEFT WALL TOP 
+        const left_Wall_topGeometry = new THREE.PlaneGeometry(20, 3);
+        const left_Wall_top = new THREE.Mesh(left_Wall_topGeometry, wallMaterial);
+        left_Wall_top.rotation.y = Math.PI / 2;
+        left_Wall_top.position.set(-10, 8.5, 0);
+        left_Wall_top.castShadow = true;
+        left_Wall_top.receiveShadow = true;
+        scene.add(left_Wall_top);
+
+        // LEFT WALL RIGHT
+        const left_Wall_rightGeometry = new THREE.PlaneGeometry(5, 4);
+        const left_Wall_right = new THREE.Mesh(left_Wall_rightGeometry, wallMaterial);
+        left_Wall_right.rotation.y = Math.PI / 2;
+        left_Wall_right.position.set(-10, 5, -7.5);
+        left_Wall_right.castShadow = true;
+        left_Wall_right.receiveShadow = true;
+        scene.add(left_Wall_right);
+
+        // LEFT WALL LEFT
+        const left_Wall_leftGeometry = new THREE.PlaneGeometry(5, 4);
+        const left_Wall_left = new THREE.Mesh(left_Wall_rightGeometry, wallMaterial);
+        left_Wall_left.rotation.y = Math.PI / 2;
+        left_Wall_left.position.set(-10, 5, 7.5);
+        left_Wall_left.castShadow = true;
+        left_Wall_left.receiveShadow = true;
+        scene.add(left_Wall_left);
+
+
+        // BACK WALL
+        const backWallGeometry = new THREE.PlaneGeometry(20, 10);
+        const backWall = new THREE.Mesh(backWallGeometry, wallMaterial);
+        backWall.position.set(0, 5, -10);
+        backWall.castShadow = true;
+        backWall.receiveShadow = true;
+        scene.add(backWall);
+
+        //=============================== WINDOWS
+        
+        const windows_Geometry = new THREE.BoxGeometry(10, 4, 0.1);
+        const windows_Material = new THREE.MeshStandardMaterial({
+        color: 0xffffff,
+        transparent: true,
+        opacity: 0.4
+        });
+        const windows = new THREE.Mesh(windows_Geometry, windows_Material);
+        windows.position.set(-10, 5, 0);
+        
+        windows.rotation.y = Math.PI / 2;
+        scene.add(windows);
+
+        //=============================== DOORS
+ 
+        // LEFT DOORS
+
+        const left_door_glassGeometry = new THREE.BoxGeometry(10, 9.9, 0.01);
+        const left_door_glassMaterial = new THREE.MeshStandardMaterial({
+        color: 0xffffff,
+        transparent: true,
+        opacity: 0.4
+        });
+        const left_door_glass = new THREE.Mesh(left_door_glassGeometry, left_door_glassMaterial);
+        left_door_glass.position.set(-5, 5, 10.01);     
+        //left_door.rotation.y = Math.PI / 2;
+        scene.add(left_door_glass);
+
+        // RIGHT ROORS
+
+        const right_door_glassGeometry = new THREE.BoxGeometry(10, 9.9, 0.01);
+        const right_door_glassMaterial = new THREE.MeshStandardMaterial({
+        color: 0xffffff,
+        transparent: true,
+        opacity: 0.4
+        });
+        const right_door_glass = new THREE.Mesh(right_door_glassGeometry, right_door_glassMaterial);
+        right_door_glass.position.set(5, 5, 10);     
+        scene.add(right_door_glass);
+
+
+        //=============================== DOORS FRAME
+        // FRAME TOP
+        const farme_topGeometry = new THREE.BoxGeometry(20, 0.05, 0.05);
+        const farme_top = new THREE.Mesh(farme_topGeometry, floorMaterial);
+        farme_top.receiveShadow = true;
+        farme_top.position.set(0, 0.03, 10);
+        scene.add(farme_top);
+
+        // FRAME DAWN
+        const frame_dawn = farme_top.clone();
+        frame_dawn.position.set(0, 9.97, 10);
+        scene.add(frame_dawn);      
+
+        //=============================== WARDROPE
+
+        // TEXTURE (verticale)
+        // =========================
+        const textureLoader_wardrobe = new THREE.TextureLoader();
+        const woodTexture = textureLoader_wardrobe.load(
+            'https://raw.githubusercontent.com/Essabki/Three.js_wardrobe.II/refs/heads/main/texture/wood/verticale.jpg'
+        );
+
+        woodTexture.wrapS = THREE.RepeatWrapping;
+        woodTexture.wrapT = THREE.RepeatWrapping;
+        woodTexture.repeat.set(1, 1);
+
+        // TEXTURE (orizzontale)
+        // =========================
+        const orizzontaletextureLoader = new THREE.TextureLoader();
+        const orizzontalewoodTexture = textureLoader.load(
+            'https://raw.githubusercontent.com/Essabki/Three.js_wardrobe.II/refs/heads/main/texture/wood/orizzontale.jpg');
+        orizzontalewoodTexture.wrapS = THREE.RepeatWrapping;
+        orizzontalewoodTexture.wrapT = THREE.RepeatWrapping;
+        orizzontalewoodTexture.repeat.set(1, 1);
+
+        
+// WARDROBE GROUP
+// ========================================
+
+const wardrobeGroup = new THREE.Group();
+scene.add(wardrobeGroup);
+
+const wardrope_backMaterial = new THREE.MeshStandardMaterial({
+    map: woodTexture
+});
+
+const wardrope_backGeometry = new THREE.BoxGeometry(16, 26, 0.1);
+const wardrope_back = new THREE.Mesh(
+    wardrope_backGeometry,
+    wardrope_backMaterial
+);
+
+wardrope_back.position.set(0, 0, 0);
+wardrobeGroup.add(wardrope_back);
+
+const wardrope_leftMaterial = new THREE.MeshStandardMaterial({
+    map: woodTexture
+});
+const wardrope_leftGeometry = new THREE.BoxGeometry(0.1, 26, 6);
+const wardrope_left = new THREE.Mesh(
+    wardrope_leftGeometry,
+    wardrope_leftMaterial
+);
+
+wardrope_left.position.set(7.95, 0, 3);
+wardrobeGroup.add(wardrope_left);
+
+// WARDROBE RIGHT SIDE
+
+const wardrope_rightGeometry = new THREE.BoxGeometry(0.1, 26, 6);
+const wardrope_right = new THREE.Mesh(
+    wardrope_rightGeometry,
+    wardrope_leftMaterial
+);
+
+wardrope_right.position.set(-7.95, 0, 3);
+wardrobeGroup.add(wardrope_right);
+
+// WARDROBE MIDELL SIDE
+
+const wardrope_midellGeometry = new THREE.BoxGeometry(0.1, 20.2, 6);
+
+const wardrope_midell = new THREE.Mesh(
+    wardrope_midellGeometry,
+    wardrope_leftMaterial
+);
+
+wardrope_midell.position.set(0, 2.9, 3);
+//wardrobeGroup.add(wardrope_midell);
+
+// WARDROBE FLOOR MATERIAL
+
+const wardrobe_floorMaterial = new THREE.MeshStandardMaterial({
+    map: orizzontalewoodTexture
+});
+
+// WARDROBE FLOOR SIDE
+
+const wardrobe_floorGeometry = new THREE.BoxGeometry(16, 0.1, 6);
+
+const wardrobe_floor = new THREE.Mesh(
+    wardrobe_floorGeometry,
+    wardrobe_floorMaterial
+);
+wardrobe_floor.position.set(0, -12.99, 3);
+wardrobeGroup.add(wardrobe_floor);
+
+// WARDROBE ROOF SIDE
+
+const wardrobe_roofGeometry = new THREE.BoxGeometry(16, 0.1, 6);
+const wardrobe_roof = new THREE.Mesh(
+    wardrobe_roofGeometry,
+    wardrobe_floorMaterial
+);
+wardrobe_roof.position.set(0, 12.99, 3);
+wardrobeGroup.add(wardrobe_roof);
+
+// WARDROBE DRAWER ROOF
+
+const wardrobe_drawer_roofGeometry = new THREE.BoxGeometry(15.99, 0.1, 6);
+const wardrobe_drawer_roof = new THREE.Mesh(
+    wardrobe_drawer_roofGeometry,
+    wardrobe_floorMaterial
+);
+wardrobe_drawer_roof.position.set(0, -7.25, 3);
+wardrobeGroup.add(wardrobe_drawer_roof);
+
+ // DRAWER GROUP
+        
+        const drawerGroup = new THREE.Group();
+        // ------------------------- FRONT
+        const drawer_frontDGeometry = new THREE.BoxGeometry(8, 2.9, 0.01);
+        const drawer_frontD = new THREE.Mesh(drawer_frontDGeometry, wardrobe_floorMaterial);
+        drawer_frontD.position.set(0, 1.45, 3); 
+        drawerGroup.add(drawer_frontD);
+
+        // ------------------------- BACK
+        const drawer_backDGeometry = new THREE.BoxGeometry(8, 2.5, 0.01);
+        const drawer_backD = new THREE.Mesh(drawer_backDGeometry, wardrobe_floorMaterial);
+        drawer_backD.position.set(0, 1.25, -3);
+        drawerGroup.add(drawer_backD);
+
+        // ------------------------- LEFT
+        const drawer_leftDGeometry = new THREE.BoxGeometry(6, 2.5, 0.01);
+        const drawer_leftD = new THREE.Mesh(drawer_leftDGeometry, wardrobe_floorMaterial);
+        drawer_leftD.rotation.y = Math.PI / 2;
+        drawer_leftD.position.set(-4, 1.25, 0);
+        drawerGroup.add(drawer_leftD);
+
+        // ------------------------- RIGHT
+        const drawer_rightDGeometry = new THREE.BoxGeometry(6, 2.5, 0.01);
+        const drawer_rightD = new THREE.Mesh(drawer_rightDGeometry, wardrobe_floorMaterial);
+        drawer_rightD.rotation.y = Math.PI / 2;
+        drawer_rightD.position.set(4, 1.25, 0);
+        drawerGroup.add(drawer_rightD);
+
+        // ------------------------- BASE
+        const drawer_baseGeometry = new THREE.BoxGeometry(8, 6, 0.01);
+        const drawer_base = new THREE.Mesh(drawer_baseGeometry, wardrobe_floorMaterial);
+        drawer_base.rotation.x = Math.PI / 2;
+        drawer_base.position.set(0, 0.06, 0);
+        drawerGroup.add(drawer_base);
+
+
+
+        // ========================= HANDLE ==========
+const handleGeometry = new THREE.BoxGeometry(2, 0.3, 0.1);
+
+// load texture RIGHT HERE (so it's defined before use)
+const handleTexture = new THREE.TextureLoader().load('https://raw.githubusercontent.com/Essabki/Three.js_wardrobe/refs/heads/main/texture/bar.jpg');
+
+const handleMaterial = new THREE.MeshStandardMaterial({
+    map: handleTexture
+});
+
+const handle = new THREE.Mesh(handleGeometry, handleMaterial);
+
+handle.position.set(0, 1.45, 3.02);
+drawerGroup.add(handle);
+
+        // POSITION WHOLE DRAWER
+        drawerGroup.position.set(0, -10.1, 0);
+        drawerGroup.scale.set(1.97,1,1)
+        drawerGroup.position.z = 3; 
+        scene.add(drawerGroup);
+
+        // DRAWER 2
+        const drawerGroup2 = drawerGroup.clone();
+        drawerGroup2.position.set(0, -13, 3);
+        drawerGroup2.position.z = 3; 
+        scene.add(drawerGroup2);
+
+wardrobeGroup.add(drawerGroup);
+wardrobeGroup.add(drawerGroup2);
+
+////////////////////////////////////////////
+// WARDROBE DOORS 
+
+const wardrobe_doorWidth = 8;
+const wardrobe_doorHeight = 20.2;
+const wardrobe_doorDepth = 0.01;
+
+const wardrobe_doorMaterial = new THREE.MeshStandardMaterial({
+    map: woodTexture
+});
+
+
+// LEFT DOOR (NOW TRUE LEFT SIDE)
+// =========================
+
+const wardrobe_leftDoorGroup = new THREE.Group();
+
+const wardrobe_leftDoor = new THREE.Mesh(
+    new THREE.BoxGeometry(wardrobe_doorWidth, wardrobe_doorHeight, wardrobe_doorDepth),
+    wardrobe_doorMaterial
+);
+
+// hinge on RIGHT edge
+wardrobe_leftDoor.position.set(-wardrobe_doorWidth / 2, 0, 0);
+
+wardrobe_leftDoorGroup.add(wardrobe_leftDoor);
+
+
+// reuse handle
+const wardrobe_leftHandle = new THREE.Mesh(
+    handleGeometry,
+    handleMaterial
+);
+
+wardrobe_leftHandle.position.set(-wardrobe_doorWidth / 2 + 0.5, 0, 0);
+wardrobe_leftDoor.add(wardrobe_leftHandle);
+wardrobe_leftHandle.position.set(-3.3,0,0)
+wardrobe_leftHandle.rotation.z =  Math.PI / 2 ;
+wardrobe_leftHandle.scale.set(2,1,1);
+// FIXED POSITION → LEFT HALF OF CABINET
+wardrobe_leftDoorGroup.position.set(7.99, 2.90, 6);
+
+scene.add(wardrobe_leftDoorGroup);
+
+// WARDROBE RIGHT DOOR
+// RIGHT DOOR
+// =========================
+
+const wardrobe_rightDoorGroup = new THREE.Group();
+
+const wardrobe_rightDoor = new THREE.Mesh(
+    new THREE.BoxGeometry(
+        wardrobe_doorWidth,
+        wardrobe_doorHeight,
+        wardrobe_doorDepth
+    ),
+    wardrobe_doorMaterial
+);
+
+// hinge on LEFT edge
+wardrobe_rightDoor.position.set(
+    wardrobe_doorWidth / 2,
+    0,
+    0
+);
+
+wardrobe_rightDoorGroup.add(wardrobe_rightDoor);
+
+// HANDLE
+const wardrobe_rightHandle = new THREE.Mesh(
+    handleGeometry,
+    handleMaterial
+);
+
+wardrobe_rightHandle.position.set(3.3, 0, 0);
+
+wardrobe_rightHandle.rotation.z = Math.PI / 2;
+
+wardrobe_rightHandle.scale.set(2, 1, 1);
+
+wardrobe_rightDoor.add(wardrobe_rightHandle);
+
+// POSITION
+wardrobe_rightDoorGroup.position.set(
+    -7.99,
+    2.90,
+    6
+);
+
+// ADD TO WARDROBE
+wardrobeGroup.add(wardrobe_rightDoorGroup);
+wardrobeGroup.add(wardrobe_leftDoorGroup);
+wardrobe_leftDoor.name = "leftDoor";
+wardrobe_rightDoor.name = "rightDoor";
+///////////////////////////////////////////
+
+        
+        // bar
+        const loader = new THREE.TextureLoader();
+        const texture = loader.load('https://raw.githubusercontent.com/Essabki/Three.js_wardrobe/refs/heads/main/texture/bar.jpg');
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+        texture.repeat.set(3, 1);
+
+        const geometry = new THREE.CylinderGeometry(0.1, 0.1, 15.99, 90);
+        const material = new THREE.MeshStandardMaterial({ map: texture });
+        const bar = new THREE.Mesh(geometry, material);
+        bar.rotation.z = Math.PI / 2;
+        bar.position.set(0, 10, 3);
+        scene.add(bar);
+        wardrobeGroup.add(bar);
+        // WARDROBE GLB
+        
+// heel
+const loaderheel = new GLTFLoader();
+
+loaderheel.load(    'https://raw.githubusercontent.com/Essabki/Three.js_wardrobe/main/texture/glb/classic_high_heel_pumps.glb',
+
+     (gltf) => {
+    const heel = gltf.scene;
+    heel.scale.set(0.3, 0.3, 0.3);
+
+    heel.position.set(1, -5.8, 4);
+    heel.rotation.y = Math.PI / 2; // turn sid
+    wardrobeGroup.add(heel);
+});
+
+// clothes
+const loaderwood_clothes= new GLTFLoader();
+loaderwood_clothes.load('https://raw.githubusercontent.com/Essabki/Three.js_wardrobe/main/texture/glb/hangers_and_tee-shirt.glb', (gltf) => {
+    const wood_clothes = gltf.scene;
+    // Scale skin (adjust as needed)
+    wood_clothes.scale.set(1, 1, 1.6);
+
+    wood_clothes.position.set(0, 8.9, 3);
+    wood_clothes.rotation.y = Math.PI / 2; // turn sid
+    scene.add(wood_clothes);
+    wardrobeGroup.add(wood_clothes);
+});
+
+
+
+
+
+// bag shoppin'
+
+ const loaderbag_shoppin= new GLTFLoader();
+
+loaderbag_shoppin.load('https://raw.githubusercontent.com/Essabki/Three.js_wardrobe/main/texture/glb/designer_shopping_bag.glb',
+ (gltf) => {
+    const bag_shoppin = gltf.scene;
+    // Scale skin (adjust as needed)
+    bag_shoppin.scale.set(14, 14, 14);
+
+    bag_shoppin.position.set(2, -7.1, 3);
+    //bag_shoppin.rotation.y = Math.PI / 2; // turn sid
+    scene.add(bag_shoppin);
+    wardrobeGroup.add(bag_shoppin);
+});
+ // bagprada
+
+ const loaderbagprada= new GLTFLoader();
+
+loaderbagprada.load('https://raw.githubusercontent.com/Essabki/Three.js_wardrobe/main/texture/glb/prada_bag.glb', (gltf) => {
+    const bagprada = gltf.scene;
+    bagprada.scale.set(30, 30, 30);
+
+    bagprada.position.set(3.9, -7, -3);
+    bagprada.rotation.y = Math.PI / 2;
+    scene.add(bagprada);
+    wardrobeGroup.add(bagprada);
+});
+
+
+ // hundbag2
+
+ const loaderhundbag2= new GLTFLoader();
+
+loaderhundbag2.load('https://raw.githubusercontent.com/Essabki/Three.js_wardrobe/main/texture/glb/hundbag2.glb', (gltf) => {
+    const hundbag2 = gltf.scene;
+    // Scale skin (adjust as needed)
+    hundbag2.scale.set(10, 10, 10);
+
+    hundbag2.position.set(-3.5, -5, 3.5);
+   // lv__bag.rotation.y = Math.PI / 2; // turn sid
+    scene.add(hundbag2);
+    wardrobeGroup.add(hundbag2);
+});
+
+wardrobeGroup.scale.set(0.35,0.35,0.35);
+//wardrobeGroup.position.set(-6,4.6,-9);
+wardrobeGroup.position.set(-10,4.6,-7);
+wardrobeGroup.rotation.y = Math.PI / 2;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // =================================📏 AXES
+
+        scene.add(new THREE.AxesHelper(4));
+
+        //===============================DOORS LOGIC
+
+// RAYCASTER
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+
+        // DOOR STATE
+let leftDoor_glassOpen = false;
+let rightDoor_glassOpen = false;
+        let drawer1Open = false;
+        let drawer2Open = false;
+        let wardrobe_leftDoorOpen = false;
+        let wardrobe_rightDoorOpen = false;
+        const animationSpeed = 0.08;
+
+
+// ========== CLICK HANDLER ==========
+
+window.addEventListener("click", onMouseClick);
+
+function onMouseClick(event) {
+
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+
+    // ==================================================
+    // ALL INTERACTIVE OBJECTS IN ONE LIST
+    // ==================================================
+    const intersects = raycaster.intersectObjects([
+        drawerGroup,
+        drawerGroup2,
+        left_door_glass,
+        right_door_glass,
+        wardrobe_leftDoorGroup,
+        wardrobe_rightDoorGroup
+    ], true);
+
+    if (intersects.length === 0) return;
+
+    const obj = intersects[0].object;
+
+    // ==================================================
+    // DRAWERS
+    // ==================================================
+    if (drawerGroup.children.includes(obj)) {
+        drawer1Open = !drawer1Open;
+        return;
+    }
+
+    if (drawerGroup2.children.includes(obj)) {
+        drawer2Open = !drawer2Open;
+        return;
+    }
+
+    // ==================================================
+    // GLASS DOORS
+    // ==================================================
+    if (obj === left_door_glass) {
+        leftDoor_glassOpen = !leftDoor_glassOpen;
+        return;
+    }
+
+    if (obj === right_door_glass) {
+        rightDoor_glassOpen = !rightDoor_glassOpen;
+        return;
+    }
+
+    // ==================================================
+    // WARDROBE DOORS (NEW)
+    // ==================================================
+// WARDROBE DOORS
+if (obj.name === "leftDoor") {
+    wardrobe_leftDoorOpen = !wardrobe_leftDoorOpen;
+    return;
+}
+
+if (obj.name === "rightDoor") {
+    wardrobe_rightDoorOpen = !wardrobe_rightDoorOpen;
+    return;
+}
+}
+
+
+
+        // =================================🎮 SMART ORBIT CONTROLS (UPDATED)
+        const controls = new OrbitControls(camera, renderer.domElement);
+
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+        // 🔥 KEY FEATURE (zoom where mouse is)
+        controls.zoomToCursor = true;
+
+        // Better navigation
+        controls.enablePan = true; 
+        controls.screenSpacePanning = true;
+
+        // Limits
+        controls.minDistance = 2;
+        controls.maxDistance = 50;
+        controls.maxPolarAngle = Math.PI / 2;
+
+        // 🎯 Better focus point (not ground center)
+        controls.target.set(0, 3, 0);
+        controls.update();
+
+        // Initial camera position
+        camera.position.set(15, 10, 15);
+
+
+        //================================= Animation loop
+     function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+
+    // ==================================================
+    // GLASS DOORS (SLIDE)
+    // ==================================================
+    left_door_glass.position.x = THREE.MathUtils.lerp(
+        left_door_glass.position.x,
+        leftDoor_glassOpen ? 5 : -5,
+        animationSpeed
+    );
+
+    right_door_glass.position.x = THREE.MathUtils.lerp(
+        right_door_glass.position.x,
+        rightDoor_glassOpen ? -5 : 5,
+        animationSpeed
+    );
+
+    // ==================================================
+    // DRAWERS (SLIDE Z)
+    // ==================================================
+    drawerGroup.position.z = THREE.MathUtils.lerp(
+        drawerGroup.position.z,
+        drawer1Open ? 8 : 3,
+        animationSpeed
+    );
+
+    drawerGroup2.position.z = THREE.MathUtils.lerp(
+        drawerGroup2.position.z,
+        drawer2Open ? 8 : 3,
+        animationSpeed
+    );
+
+    // ==================================================
+    // WARDROBE DOORS (ROTATE)
+    // ==================================================
+wardrobe_leftDoorGroup.rotation.y = THREE.MathUtils.lerp(
+    wardrobe_leftDoorGroup.rotation.y,
+    wardrobe_leftDoorOpen ? Math.PI / 2 : 0,
+    animationSpeed
+);
+
+wardrobe_rightDoorGroup.rotation.y = THREE.MathUtils.lerp(
+    wardrobe_rightDoorGroup.rotation.y,
+    wardrobe_rightDoorOpen ? -Math.PI / 2 : 0,
+    animationSpeed
+);
+
+    // ==================================================
+    // RENDER
+    // ==================================================
+    renderer.render(scene, camera);
+}
+
+animate();
+        //================================= Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
