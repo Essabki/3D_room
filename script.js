@@ -29,13 +29,13 @@
         const textureLoader = new THREE.TextureLoader();
         
         // FLOOR TEXTURE
-        const floorTexture = textureLoader.load('https://raw.githubusercontent.com/Essabki/source/main/white-gold-marble-texture.jpg');
+        const floorTexture = textureLoader.load('texture/white-gold-marble-texture.jpg');
         floorTexture.wrapS = THREE.RepeatWrapping;
         floorTexture.wrapT = THREE.RepeatWrapping;
         floorTexture.repeat.set(1,2);
 
         // WALL TEXTURE
-        const wallTexture = textureLoader.load(  'https://raw.githubusercontent.com/Essabki/source/main/white-gold-marble-texture.jpg');
+        const wallTexture = textureLoader.load(  'texture/white-gold-marble-texture.jpg');
         wallTexture.wrapS = THREE.RepeatWrapping;
         wallTexture.wrapT = THREE.RepeatWrapping;
         wallTexture.repeat.set(1, 1);
@@ -194,7 +194,7 @@
        
         const textureLoader_wardrobe = new THREE.TextureLoader();
         const woodTexture = textureLoader_wardrobe.load(
-            'https://raw.githubusercontent.com/Essabki/Three.js_wardrobe.II/refs/heads/main/texture/wood/verticale.jpg'
+            'texture/verticale.jpg'
         );
 
         woodTexture.wrapS = THREE.RepeatWrapping;
@@ -205,7 +205,7 @@
        
         const orizzontaletextureLoader = new THREE.TextureLoader();
         const orizzontalewoodTexture = textureLoader.load(
-            'https://raw.githubusercontent.com/Essabki/Three.js_wardrobe.II/refs/heads/main/texture/wood/orizzontale.jpg');
+            'texture/orizzontale.jpg');
         orizzontalewoodTexture.wrapS = THREE.RepeatWrapping;
         orizzontalewoodTexture.wrapT = THREE.RepeatWrapping;
         orizzontalewoodTexture.repeat.set(1, 1);
@@ -465,7 +465,7 @@
         
         // bar
         const loader = new THREE.TextureLoader();
-        const texture = loader.load('https://raw.githubusercontent.com/Essabki/Three.js_wardrobe/refs/heads/main/texture/bar.jpg');
+        const texture = loader.load('texture/bar.jpg');
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set(3, 1);
@@ -912,7 +912,7 @@
         (gltf) => {
 
         const office = gltf.scene;      
-        office.scale.set(7,7,7);
+        office.scale.set(6,6,6);
         office.position.set(9.7,6,3.5);
         scene.add(office);
         console.log("GLB loaded");
