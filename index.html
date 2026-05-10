@@ -39,8 +39,8 @@
 
         // Scene setup
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x87CEEB);
-
+        //scene.background = new THREE.Color(0x87CEEB);
+        scene.background = new THREE.Color(0x001122);
         const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -64,16 +64,16 @@
         const textureLoader = new THREE.TextureLoader();
         
         // FLOOR TEXTURE
-        const floorTexture = textureLoader.load('https://raw.githubusercontent.com/Essabki/3D_room/main/texture/brown-wood-textured-background-with-design-space.jpg');
+        const floorTexture = textureLoader.load('https://raw.githubusercontent.com/Essabki/source/main/white-gold-marble-texture.jpg');
         floorTexture.wrapS = THREE.RepeatWrapping;
         floorTexture.wrapT = THREE.RepeatWrapping;
         floorTexture.repeat.set(1,2);
 
         // WALL TEXTURE
-        const wallTexture = textureLoader.load('https://raw.githubusercontent.com/Essabki/3D_room/refs/heads/main/texture/white_paint_background.jpg');
+        const wallTexture = textureLoader.load(  'https://raw.githubusercontent.com/Essabki/source/main/white-gold-marble-texture.jpg');
         wallTexture.wrapS = THREE.RepeatWrapping;
         wallTexture.wrapT = THREE.RepeatWrapping;
-        wallTexture.repeat.set(2, 1);
+        wallTexture.repeat.set(1, 1);
 
         // Materials
         const floorMaterial = new THREE.MeshLambertMaterial({
@@ -490,8 +490,8 @@
         wardrobeGroup.add(wardrobe_rightDoorGroup);
         wardrobeGroup.add(wardrobe_leftDoorGroup);
 
-        wardrobeGroup.scale.set(0.35,0.35,0.45);
-        wardrobeGroup.position.set(-7,4.6,-9.9);
+        wardrobeGroup.scale.set(0.35,0.32,0.45);
+        wardrobeGroup.position.set(-6,4.1,-9.9);
 
         wardrobe_leftDoor.name = "leftDoor";
         wardrobe_rightDoor.name = "rightDoor";
@@ -672,6 +672,149 @@
           Nightstand_drawerHandle_II
         );
 
+// ================================= =============================== DESK
+
+// DESK TABLE
+        const desk_Group = new THREE.Group();
+        scene.add(desk_Group);
+
+        
+        const desk_tableGeometry = new THREE.BoxGeometry(14, 6, 0.1);
+        const desk_table = new THREE.Mesh(
+         desk_tableGeometry,
+         wardrobe_floorMaterial
+        );
+
+        desk_table.rotation.x = Math.PI / 2;
+        desk_table.position.set(-3.95, 6.1, -3);
+        desk_Group.add(desk_table);
+
+// DESK TABLE STAND
+
+
+
+
+// DRAWER COVER
+
+// LEFT DRAWER COVER
+        const cover_Group = new THREE.Group();
+        scene.add(cover_Group);
+
+        const desk_leftGeometry = new THREE.BoxGeometry(0.1, 6.5, 6);
+        const desk_left = new THREE.Mesh(
+        desk_leftGeometry,
+        wardrope_leftMaterial
+        );
+
+        desk_left.position.set(-3, 2.8, -3);
+        desk_Group.add(desk_left);
+
+// RIGHT DRAWER COVER
+
+        const drawer_cover_right = desk_left.clone();
+        drawer_cover_right.position.set(3, 2.8, -3);
+        desk_Group.add(drawer_cover_right);
+
+// BACK DRAWER COVER
+
+        const drawer_cover_back = desk_left.clone();
+        drawer_cover_back.position.set(3, 2.8, -3);
+        desk_Group.add(drawer_cover_back);
+        drawer_cover_back.position.set(0, 2.8, -6);
+        drawer_cover_back.rotation.y = Math.PI / 2;
+        
+
+// DESK TABLE STAND
+        const desk_stand = drawer_cover_right.clone();
+        desk_Group.add(desk_stand);
+        desk_stand.position.set(-10.9, 2.8, -3);
+ 
+ 
+// DRAWER I
+
+        const desk_drawer_Group = new THREE.Group();
+        scene.add(desk_drawer_Group);
+
+// FRONT SIDE
+        const desk_drawer_Geometry = new THREE.BoxGeometry(6, 2, 0.1);
+        const desk_drawer_front = new THREE.Mesh(
+        desk_drawer_Geometry,
+         wardrobe_floorMaterial
+        );
+        desk_drawer_front.position.set(0, 5, 0);
+        desk_drawer_Group.add(desk_drawer_front);
+
+
+// LEFT SIDE
+
+        const desk_drawer_leftGeometry = new THREE.BoxGeometry(6, 1.5, 0.1);
+        const desk_drawer_left = new THREE.Mesh(
+         desk_drawer_leftGeometry,
+        wardrobe_floorMaterial
+        );
+
+        desk_drawer_left.rotation.y = Math.PI / 2;
+        desk_drawer_left.position.set(-2.95, 4.75, -3);
+        desk_drawer_Group.add(desk_drawer_left);
+
+
+// RIGHT SIDE
+
+        const desk_drawer_right = desk_drawer_left.clone();
+        desk_drawer_right.position.set(2.95, 4.75, -3);
+        desk_drawer_Group.add(desk_drawer_right);
+
+// BACK SIDE
+
+        const desk_drawer_back = desk_drawer_left.clone();
+        desk_drawer_back.rotation.y = Math.PI;
+        desk_drawer_back.position.set(0, 4.75, -6);
+        desk_drawer_Group.add(desk_drawer_back);
+
+
+// BASE SIDE
+
+        const desk_drawer_baseGeometry = new THREE.BoxGeometry(6, 6, 0.1);
+        const desk_drawer_base = new THREE.Mesh(
+        desk_drawer_baseGeometry,
+        wardrobe_floorMaterial
+        );
+
+        desk_drawer_base.rotation.x = Math.PI / 2;
+        desk_drawer_base.position.set(0, 4.1, -3);
+        desk_drawer_Group.add(desk_drawer_base);
+
+
+// DRAWER II
+
+        const desk_drawer_Group_II = desk_drawer_Group.clone();
+        desk_drawer_Group_II.position.set(0, -2, 0);
+        desk_Group.add(desk_drawer_Group_II);
+
+
+// DRAWER III
+
+        const desk_drawer_Group_III = desk_drawer_Group.clone();
+        desk_drawer_Group_III.position.set(0, -4, 0);
+        desk_Group.add(desk_drawer_Group_III);
+
+
+// ADD MAIN DRAWER
+
+        desk_Group.add(desk_drawer_Group);
+        desk_Group.position.set(0, 5, 0);
+
+
+
+        desk_Group.add(desk_drawer_Group);
+        desk_Group.position.set(6.8,0.3,6.99);
+        desk_Group.rotation.y = Math.PI / -2; // turn sid
+       desk_Group.scale.set(0.55,0.5,0.5)
+
+
+
+
+
 
 //================================================== GLB
         
@@ -756,7 +899,7 @@
     const bed = gltf.scene;
 
     // Scale model
-    bed.scale.set(1, 1, 1);
+    bed.scale.set(1, 1.2, 1);
 
     // Correct object here
     bed.position.set(5.7, 0, -9.9);
@@ -768,30 +911,57 @@
     // wardrobeGroup.add(bed);
     });
 
+        const loaderrug = new GLTFLoader();
+        loaderrug.load(
+        'https://raw.githubusercontent.com/Essabki/source/main/rug_with_tassles.glb',
 
-// rug
-    const loaderrug = new GLTFLoader();
+        (gltf) => {
 
-    loaderrug.load(
-     "https://raw.githubusercontent.com/Essabki/3D_fitted_wardrobe_three.js/main/texture/coat_hanger.glb",
+        const hanger = gltf.scene;
 
-    (gltf) => {
-        const rug = gltf.scene;
-        rug.scale.set(3, 3, 3);
-        rug.position.set(-6, 0, -6);
-         //rug.rotation.y = Math.PI / 2;
-        // scene.add(rug);
-        Nightstand.add(rug);
-    }
-    );
+        //hanger.scale.set(0.03,0.025,0.03);
+        hanger.scale.set(3,3.5,3.5);
+        hanger.position.set(-5,0,2);
+        scene.add(hanger);
+        console.log("GLB loaded");
+
+},
+        (xhr) => {
+
+    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+        },
+        (error) => {
+         console.error("ERROR:", error);
+        }
+
+        );
 
 
 
+     // office
 
+        const loaderoffice = new GLTFLoader();
+        loaderoffice.load(
+              "https://raw.githubusercontent.com/Essabki/source/main/mirror_baroque.glb",
 
+        (gltf) => {
 
+        const office = gltf.scene;      
+        office.scale.set(7,7,7);
+        office.position.set(9.7,6,3.5);
+        scene.add(office);
+        console.log("GLB loaded");
+        office.rotation.y = Math.PI / -2; // turn sid        
+},
+        (xhr) => {
 
+    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+        },
+        (error) => {
+         console.error("ERROR:", error);
+        }
 
+        );
 
 // ================================= =============================== AXES
 
@@ -817,6 +987,9 @@
         let windowsOpen1 = false;
         let windowsOpen2 = false;
         let targetOffset = 3; // how far they slide
+        let deskDrawer1Open = false;
+        let deskDrawer2Open = false;
+        let deskDrawer3Open = false;
 //=============================== =============================== CLICK HANDLER 
 
         window.addEventListener("click", onMouseClick);
@@ -831,17 +1004,24 @@
 
 // ALL INTERACTIVE OBJECTS IN ONE LIST
 
-    const intersects = raycaster.intersectObjects([
-         drawerGroup,
-         drawerGroup2,
-         left_door_glass,
-          right_door_glass,
-          wardrobe_leftDoorGroup,
-         wardrobe_rightDoorGroup,
-         Nightstand_drawer_Group,
-         Nightstand_drawer_Group_II,
-         windows,
-         windows2
+const intersects = raycaster.intersectObjects([
+
+    drawerGroup,
+    drawerGroup2,
+
+    desk_drawer_Group,
+    desk_drawer_Group_II,
+    desk_drawer_Group_III,
+
+    left_door_glass,
+    right_door_glass,
+    wardrobe_leftDoorGroup,
+    wardrobe_rightDoorGroup,
+    Nightstand_drawer_Group,
+    Nightstand_drawer_Group_II,
+    windows,
+    windows2
+
 ], true);
     if (intersects.length === 0) return;
 
@@ -906,6 +1086,37 @@
     windowsOpen2 = !windowsOpen2;
     return;
     }
+
+    // DESK DRAWER I
+        if (
+    desk_drawer_Group.children.includes(obj) ||
+    obj.parent === desk_drawer_Group
+        ) {
+
+    deskDrawer1Open = !deskDrawer1Open;
+    return;
+}
+
+// DESK DRAWER II
+        if (
+    desk_drawer_Group_II.children.includes(obj) ||
+    obj.parent === desk_drawer_Group_II
+        ) {
+
+    deskDrawer2Open = !deskDrawer2Open;
+    return;
+        }
+
+// DESK DRAWER III
+        if (
+    desk_drawer_Group_III.children.includes(obj) ||
+    obj.parent === desk_drawer_Group_III
+        ) {
+
+    deskDrawer3Open = !deskDrawer3Open;
+    return;
+        }
+
 
 }
 
@@ -1003,10 +1214,34 @@
 );
 // windows
      const win1Target = windowsStartZ + (windowsOpen1 ? -targetOffset : 0);
-    const win2Target = windows2StartZ + (windowsOpen2 ? targetOffset : 0);
+     const win2Target = windows2StartZ + (windowsOpen2 ? targetOffset : 0);
 
     windows.position.z += (win1Target - windows.position.z) * 0.1;
     windows2.position.z += (win2Target - windows2.position.z) * 0.1;
+// ==================================================
+// DESK DRAWERS
+// ==================================================
+
+    desk_drawer_Group.position.z = THREE.MathUtils.lerp(
+         desk_drawer_Group.position.z,
+        deskDrawer1Open ? 4 : 0,
+    animationSpeed
+);
+
+    desk_drawer_Group_II.position.z = THREE.MathUtils.lerp(
+        desk_drawer_Group_II.position.z,
+        deskDrawer2Open ? 4 : 0,
+    animationSpeed
+);
+
+    desk_drawer_Group_III.position.z = THREE.MathUtils.lerp(
+          desk_drawer_Group_III.position.z,
+          deskDrawer3Open ? 4 : 0,
+    animationSpeed
+);
+   
+   
+   
     // ==================================================
     // RENDER
     // ==================================================
