@@ -477,7 +477,7 @@
         bar.position.set(0, 10, 3);
         scene.add(bar);
         wardrobeGroup.add(bar);
-        
+        wardrobeGroup.position.y=4.2;
 
 //================================= =============================== Nightstand
  
@@ -772,10 +772,10 @@
 
 
         desk_Group.add(desk_drawer_Group);
-        desk_Group.position.set(6.8,0.3,6.99);
-        desk_Group.rotation.y = Math.PI / -2; // turn sid
+        desk_Group.position.set(-6.8,0.19,3);
+        desk_Group.rotation.y = Math.PI / 2; // turn sid
        desk_Group.scale.set(0.55,0.5,0.5)
-
+        
 
 
 
@@ -886,10 +886,10 @@
 
         //hanger.scale.set(0.03,0.025,0.03);
         hanger.scale.set(3,3.5,3.5);
-        hanger.position.set(-5,0,2);
+        hanger.position.set(3,0,4);
         scene.add(hanger);
         console.log("GLB loaded");
-
+        hanger.rotation.y = Math.PI / 2;
 },
         (xhr) => {
 
@@ -913,10 +913,10 @@
 
         const office = gltf.scene;      
         office.scale.set(6,6,6);
-        office.position.set(9.7,6,3.5);
+        office.position.set(-9.7,5.5,6.7);
         scene.add(office);
         console.log("GLB loaded");
-        office.rotation.y = Math.PI / -2; // turn sid        
+        office.rotation.y = Math.PI / 2; // turn sid        
 },
         (xhr) => {
 
@@ -1110,8 +1110,8 @@ const intersects = raycaster.intersectObjects([
         controls.update();
 
         // Initial camera position
-        camera.position.set(20, 10, 30);
-
+       // camera.position.set(20, 10, 30);
+        camera.position.set(15, 10, 25);
 
 //================================= =============================== Animation loop
          function animate() {
