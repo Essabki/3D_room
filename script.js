@@ -29,13 +29,13 @@
         const textureLoader = new THREE.TextureLoader();
         
         // FLOOR TEXTURE
-        const floorTexture = textureLoader.load('texture/white-gold-marble-texture.jpg');
+        const floorTexture = textureLoader.load('https://raw.githubusercontent.com/Essabki/source/main/3d%20room/texture/white-gold-marble-texture.jpg');
         floorTexture.wrapS = THREE.RepeatWrapping;
         floorTexture.wrapT = THREE.RepeatWrapping;
         floorTexture.repeat.set(1,2);
 
         // WALL TEXTURE
-        const wallTexture = textureLoader.load(  'texture/white-gold-marble-texture.jpg');
+        const wallTexture = textureLoader.load(  'https://raw.githubusercontent.com/Essabki/source/main/3d%20room/texture/white-gold-marble-texture.jpg');
         wallTexture.wrapS = THREE.RepeatWrapping;
         wallTexture.wrapT = THREE.RepeatWrapping;
         wallTexture.repeat.set(1, 1);
@@ -194,7 +194,7 @@
        
         const textureLoader_wardrobe = new THREE.TextureLoader();
         const woodTexture = textureLoader_wardrobe.load(
-            'texture/verticale.jpg'
+            'https://raw.githubusercontent.com/Essabki/source/refs/heads/main/3d%20room/texture/verticale.jpg'
         );
 
         woodTexture.wrapS = THREE.RepeatWrapping;
@@ -205,7 +205,7 @@
        
         const orizzontaletextureLoader = new THREE.TextureLoader();
         const orizzontalewoodTexture = textureLoader.load(
-            'texture/orizzontale.jpg');
+            'https://raw.githubusercontent.com/Essabki/source/refs/heads/main/3d%20room/texture/orizzontale.jpg');
         orizzontalewoodTexture.wrapS = THREE.RepeatWrapping;
         orizzontalewoodTexture.wrapT = THREE.RepeatWrapping;
         orizzontalewoodTexture.repeat.set(1, 1);
@@ -342,8 +342,8 @@
 
         const handleGeometry = new THREE.BoxGeometry(2, 0.3, 0.1);
 
-// load texture RIGHT HERE (so it's defined before use)
-        const handleTexture = new THREE.TextureLoader().load('https://raw.githubusercontent.com/Essabki/Three.js_wardrobe/refs/heads/main/texture/bar.jpg');
+// load texture 
+        const handleTexture = new THREE.TextureLoader().load('https://raw.githubusercontent.com/Essabki/source/refs/heads/main/3d%20room/texture/bar.jpg');
 
         const handleMaterial = new THREE.MeshStandardMaterial({
         map: handleTexture
@@ -465,7 +465,7 @@
         
         // bar
         const loader = new THREE.TextureLoader();
-        const texture = loader.load('texture/bar.jpg');
+        const texture = loader.load('https://raw.githubusercontent.com/Essabki/source/refs/heads/main/3d%20room/texture/bar.jpg');
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set(3, 1);
@@ -586,7 +586,7 @@
 
         const Nightstand_handleTexture =
         Nightstand_textureLoader.load(
-        'https://raw.githubusercontent.com/Essabki/Three.js_wardrobe/refs/heads/main/texture/bar.jpg'
+        'https://raw.githubusercontent.com/Essabki/source/refs/heads/main/3d%20room/texture/bar%20-%20Copie.jpg'
         );
 
 
@@ -701,12 +701,12 @@
         scene.add(desk_drawer_Group);
 
 // FRONT SIDE
-        const desk_drawer_Geometry = new THREE.BoxGeometry(6, 2, 0.1);
+        const desk_drawer_Geometry = new THREE.BoxGeometry(6, 1.7, 0.1);
         const desk_drawer_front = new THREE.Mesh(
         desk_drawer_Geometry,
          wardrobe_floorMaterial
         );
-        desk_drawer_front.position.set(0, 5, 0);
+        desk_drawer_front.position.set(0, 4.85, 0);
         desk_drawer_Group.add(desk_drawer_front);
 
 
@@ -776,6 +776,42 @@
         desk_Group.rotation.y = Math.PI / 2; // turn sid
        desk_Group.scale.set(0.55,0.5,0.5)
         
+// DESK DRAWER HANDLE
+     // DRAWER I HANDLE
+        const desk_drawer_handle_Geometry = new THREE.BoxGeometry(2, 0.5, 0.1);
+        const desk_drawe_handle = new THREE.Mesh(
+        desk_drawer_handle_Geometry,
+         wardrobe_floorMaterial
+        );
+        desk_drawe_handle.position.set(2, 5.8, 0);
+        desk_drawer_Group.add(desk_drawe_handle);
+       
+        // DRAWER I HANDLE II
+        const desk_drawer_handle2 = desk_drawe_handle.clone();
+        desk_drawer_handle2 .position.set(-2, 5.8, 0);
+        desk_drawer_Group.add(desk_drawer_handle2 );
+
+     // DRAWER II HANDLE
+        const desk_drawer2_handle1 = desk_drawe_handle.clone();
+        desk_drawer2_handle1 .position.set(2, 5.75, 0);
+        desk_drawer_Group_II.add(desk_drawer2_handle1 );   
+     // DRAWER II HANDLE II
+        const desk_drawer2_handle2 = desk_drawe_handle.clone();
+        desk_drawer2_handle2 .position.set(-2, 5.75, 0);
+        desk_drawer_Group_II.add(desk_drawer2_handle2 ); 
+
+     // DRAWER III HANDLE
+        const desk_drawer3_handle1 = desk_drawe_handle.clone();
+        desk_drawer3_handle1 .position.set(2, 5.75, 0);
+        desk_drawer_Group_III.add(desk_drawer3_handle1 );  
+     // DRAWER III HANDLE
+        const desk_drawer3_handle2 = desk_drawe_handle.clone();
+        desk_drawer3_handle2 .position.set(-2, 5.75, 0);
+        desk_drawer_Group_III.add(desk_drawer3_handle2 ); 
+
+
+
+
 
 
 
@@ -783,22 +819,21 @@
 
 //================================================== GLB
         
-// heel
+//  HEEL (SHOES)
         const loaderheel = new GLTFLoader();
 
         loaderheel.load(    
-       'https://raw.githubusercontent.com/Essabki/Three.js_wardrobe/main/texture/glb/classic_high_heel_pumps.glb',
-     (gltf) => {
-    const heel = gltf.scene;
-    heel.scale.set(0.3, 0.3, 0.3);
-    heel.position.set(1, -5.8, 4);
-    heel.rotation.y = Math.PI / 2; // turn sid
-    wardrobeGroup.add(heel);
-    });
+       'https://raw.githubusercontent.com/Essabki/source/main/3d%20room/glb/classic_high_heel_pumps.glb', (gltf) => {
+        const heel = gltf.scene;
+        heel.scale.set(0.3, 0.3, 0.3);
+        heel.position.set(1, -5.8, 4);
+        heel.rotation.y = Math.PI / 2; // turn sid
+        wardrobeGroup.add(heel);
+        });
 
-// clothes
+// CLOTHES (GLB)
         const loaderwood_clothes= new GLTFLoader();
-        loaderwood_clothes.load('https://raw.githubusercontent.com/Essabki/Three.js_wardrobe/main/texture/glb/hangers_and_tee-shirt.glb', (gltf) => {
+        loaderwood_clothes.load('https://raw.githubusercontent.com/Essabki/source/main/3d%20room/glb/hangers_and_tee-shirt.glb', (gltf) => {
         const wood_clothes = gltf.scene;
         wood_clothes.scale.set(1, 1, 1.6);
 
@@ -808,77 +843,58 @@
          wardrobeGroup.add(wood_clothes);
         });
 
-// bag shoppin'
+// BAG SHOPPING (GLB)
 
         const loaderbag_shoppin= new GLTFLoader();
 
-        loaderbag_shoppin.load(
-    'https://raw.githubusercontent.com/Essabki/Three.js_wardrobe/main/texture/glb/designer_shopping_bag.glb',
-    (gltf) => {
-    const bag_shoppin = gltf.scene;
+        loaderbag_shoppin.load('https://raw.githubusercontent.com/Essabki/source/main/3d%20room/glb/designer_shopping_bag.glb', (gltf) => {
+        const bag_shoppin = gltf.scene;
     // Scale skin (adjust as needed)
-    bag_shoppin.scale.set(14, 14, 14);
+        bag_shoppin.scale.set(14, 14, 14);
 
-    bag_shoppin.position.set(2, -7.1, 3);
+        bag_shoppin.position.set(2, -7.1, 3);
     //bag_shoppin.rotation.y = Math.PI / 2; // turn sid
-    scene.add(bag_shoppin);
-    wardrobeGroup.add(bag_shoppin);
+        scene.add(bag_shoppin);
+        wardrobeGroup.add(bag_shoppin);
     });
-// bagprada
+// HANDBAG PRADA (GLB)
 
-    const loaderbagprada= new GLTFLoader();
+         const loaderbagprada= new GLTFLoader();
 
-    loaderbagprada.load(
-    'https://raw.githubusercontent.com/Essabki/Three.js_wardrobe/main/texture/glb/prada_bag.glb', (gltf) => {
-    const bagprada = gltf.scene;
-    bagprada.scale.set(30, 30, 30);
+        loaderbagprada.load('https://raw.githubusercontent.com/Essabki/source/main/3d%20room/glb/prada_bag.glb', (gltf) => {
+        const bagprada = gltf.scene;
+        bagprada.scale.set(30, 30, 30);
 
-    bagprada.position.set(3.9, -7, -3);
-    bagprada.rotation.y = Math.PI / 2;
-    scene.add(bagprada);
-    wardrobeGroup.add(bagprada);
-    });
+        bagprada.position.set(3.9, -7, -3);
+        bagprada.rotation.y = Math.PI / 2;
+        scene.add(bagprada);
+        wardrobeGroup.add(bagprada);
+        });
 
 
- // hundbag2
+ // HUNDBAG II (GLB)
 
-    const loaderhundbag2= new GLTFLoader();
+        const loaderhundbag2= new GLTFLoader();
 
-    loaderhundbag2.load(
-    'https://raw.githubusercontent.com/Essabki/Three.js_wardrobe/main/texture/glb/hundbag2.glb', (gltf) => {
-    const hundbag2 = gltf.scene;
-    // Scale skin (adjust as needed)
-    hundbag2.scale.set(10, 10, 10);
-    hundbag2.position.set(-3.5, -5, 3.5);
-   // lv__bag.rotation.y = Math.PI / 2; // turn sid
-    scene.add(hundbag2);
-    wardrobeGroup.add(hundbag2);
-    });
+        loaderhundbag2.load('https://raw.githubusercontent.com/Essabki/source/main/3d%20room/glb/hundbag2.glb', (gltf) => {
+        const hundbag2 = gltf.scene;
 
- // BED
+        // Scale skin (adjust as needed)
 
-    const loaderbed = new GLTFLoader();
+        hundbag2.scale.set(10, 10, 10);
+        hundbag2.position.set(-3.5, -5, 3.5);
 
-    loaderbed.load(  'https://raw.githubusercontent.com/Essabki/source/main/bed.glb',
-    (gltf) => {
-    const bed = gltf.scene;
+        // lv__bag.rotation.y = Math.PI / 2; // turn sid
 
-    // Scale model
-    bed.scale.set(1, 1.2, 1);
+        scene.add(hundbag2);
+        wardrobeGroup.add(hundbag2);
+        });
 
-    // Correct object here
-    bed.position.set(5.7, 0, -9.9);
-
-    // Optional rotation
-    bed.rotation.y = Math.PI/-2 ;
-
-    scene.add(bed);
-    // wardrobeGroup.add(bed);
-    });
+// RUG (GLB)
 
         const loaderrug = new GLTFLoader();
         loaderrug.load(
-        'https://raw.githubusercontent.com/Essabki/source/main/rug_with_tassles.glb',
+        'https://raw.githubusercontent.com/Essabki/source/main/3d%20room/glb/rug_with_tassles.glb',
 
         (gltf) => {
 
@@ -893,34 +909,7 @@
 },
         (xhr) => {
 
-    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-        },
-        (error) => {
-         console.error("ERROR:", error);
-        }
-
-        );
-
-
-
-     // office
-
-        const loaderoffice = new GLTFLoader();
-        loaderoffice.load(
-              "https://raw.githubusercontent.com/Essabki/source/main/mirror_baroque.glb",
-
-        (gltf) => {
-
-        const office = gltf.scene;      
-        office.scale.set(6,6,6);
-        office.position.set(-9.7,5.5,6.7);
-        scene.add(office);
-        console.log("GLB loaded");
-        office.rotation.y = Math.PI / 2; // turn sid        
-},
-        (xhr) => {
-
-    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+       console.log((xhr.loaded / xhr.total * 100) + '% loaded');
         },
         (error) => {
          console.error("ERROR:", error);
