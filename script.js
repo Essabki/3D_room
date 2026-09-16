@@ -29,13 +29,13 @@
         const textureLoader = new THREE.TextureLoader();
         
         // FLOOR TEXTURE
-        const floorTexture = textureLoader.load('https://raw.githubusercontent.com/Essabki/source/main/3d%20room/texture/white-gold-marble-texture.jpg');
+        const floorTexture = textureLoader.load('texture/white-gold-marble-texture.jpg');
         floorTexture.wrapS = THREE.RepeatWrapping;
         floorTexture.wrapT = THREE.RepeatWrapping;
         floorTexture.repeat.set(1,2);
 
         // WALL TEXTURE
-        const wallTexture = textureLoader.load(  'https://raw.githubusercontent.com/Essabki/source/main/3d%20room/texture/white-gold-marble-texture.jpg');
+        const wallTexture = textureLoader.load(  'texture/white-gold-marble-texture.jpg');
         wallTexture.wrapS = THREE.RepeatWrapping;
         wallTexture.wrapT = THREE.RepeatWrapping;
         wallTexture.repeat.set(1, 1);
@@ -194,7 +194,7 @@
        
         const textureLoader_wardrobe = new THREE.TextureLoader();
         const woodTexture = textureLoader_wardrobe.load(
-            'https://raw.githubusercontent.com/Essabki/source/refs/heads/main/3d%20room/texture/verticale.jpg'
+            'texture/verticale.jpg'
         );
 
         woodTexture.wrapS = THREE.RepeatWrapping;
@@ -205,7 +205,7 @@
        
         const orizzontaletextureLoader = new THREE.TextureLoader();
         const orizzontalewoodTexture = textureLoader.load(
-            'https://raw.githubusercontent.com/Essabki/source/refs/heads/main/3d%20room/texture/orizzontale.jpg');
+            'texture/orizzontale.jpg');
         orizzontalewoodTexture.wrapS = THREE.RepeatWrapping;
         orizzontalewoodTexture.wrapT = THREE.RepeatWrapping;
         orizzontalewoodTexture.repeat.set(1, 1);
@@ -343,7 +343,7 @@
         const handleGeometry = new THREE.BoxGeometry(2, 0.3, 0.1);
 
 // load texture 
-        const handleTexture = new THREE.TextureLoader().load('https://raw.githubusercontent.com/Essabki/source/refs/heads/main/3d%20room/texture/bar.jpg');
+        const handleTexture = new THREE.TextureLoader().load('texture/bar.jpg');
 
         const handleMaterial = new THREE.MeshStandardMaterial({
         map: handleTexture
@@ -465,7 +465,7 @@
         
         // bar
         const loader = new THREE.TextureLoader();
-        const texture = loader.load('https://raw.githubusercontent.com/Essabki/source/refs/heads/main/3d%20room/texture/bar.jpg');
+        const texture = loader.load('texture/bar.jpg');
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set(3, 1);
@@ -586,7 +586,7 @@
 
         const Nightstand_handleTexture =
         Nightstand_textureLoader.load(
-        'https://raw.githubusercontent.com/Essabki/source/refs/heads/main/3d%20room/texture/bar%20-%20Copie.jpg'
+        'texture/bar%20-%20Copie.jpg'
         );
 
 
@@ -654,7 +654,6 @@
         desk_table.position.set(-3.95, 6.1, -3);
         desk_Group.add(desk_table);
 
-// DESK TABLE STAND
 
 
 
@@ -811,12 +810,6 @@
 
 
 
-
-
-
-
-
-
 //================================================== GLB
         
 //  HEEL (SHOES)
@@ -857,6 +850,7 @@
         scene.add(bag_shoppin);
         wardrobeGroup.add(bag_shoppin);
     });
+
 // HANDBAG PRADA (GLB)
 
          const loaderbagprada= new GLTFLoader();
@@ -906,6 +900,33 @@
         scene.add(hanger);
         console.log("GLB loaded");
         hanger.rotation.y = Math.PI / 2;
+},
+        (xhr) => {
+
+       console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+        },
+        (error) => {
+         console.error("ERROR:", error);
+        }
+
+        );
+
+// BED (GLB)
+
+        const loaderbed = new GLTFLoader();
+        loaderbed.load(
+        'bed_01.glb',
+
+        (gltf) => {
+
+        const bed = gltf.scene;
+
+        
+        bed.scale.set(1,1,1);
+        bed.position.set(5.6,0,-9.8);
+        scene.add(bed);
+        console.log("GLB loaded");
+        bed.rotation.y = Math.PI / -2;
 },
         (xhr) => {
 
