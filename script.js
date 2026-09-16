@@ -915,7 +915,7 @@
 
         const loaderbed = new GLTFLoader();
         loaderbed.load(
-        'bed_01.glb',
+        'https://raw.githubusercontent.com/Essabki/source/refs/heads/main/3d%20room/glb/bed_01.glb',
 
         (gltf) => {
 
